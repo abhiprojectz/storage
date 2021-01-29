@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Nueral CSS Code generator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+	@import url('https://fonts.googleapis.com/css2?family=Poppins');
+
+body {
+	font-family: 'Poppins', sans-serif;
+}
+
+iframe {
+	border: 0;
+	width: 100%;
+	height: 100%;
+}
+
+[container] {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+}
+
+[container] > div {
+	margin: auto;
+}
+
+input {
+	margin: 5px;
+	padding: 10px;
+	width: 500px;
+	border: 1px solid #495450;
+}
+
+button,input {
+	outline: none;
+}
+
+ul li {
+	list-style-type: none;
+}
+
+button {
+	cursor: pointer;
+}
+.btn {
+	background: #fff;
+	border: 2px solid #495450;
+	padding: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	font-weight: 700;
+
+}
+
+button:hover {
+	background: #495450;
+	color: #fff;
+}
+
+/*.a {
+	border: 2px solid #495450;
+}
+
+.a,.b {
+
+}*/
+
+.output_con {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.output_con div {
+	margin: auto;
+	border: 2px solid #495450;
+	height: 50vh;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 90%;
+	overflow-y: auto;
+}
+</style>
+</head>
+<body>
+
+	<div container>
+		<h1>Type here your query:</h1>
+		<div style="display: flex; justify-content: space-around; align-items: center;"><input id="input" type="text" name="" placeholder="type here.....">
+			<button onclick="codegen()" class="btn">Next!</button></div>
+	</div>
+
+
+
+	<div class="output_con">
+		<div class="a">
+			<pre>
+				<code id="result"></code>
+			</pre>
+		</div>
+
+		<div class="b">
+			<iframe id="view" srcdoc=""></iframe>
+		</div>
+	</div>
+
+
+</body>
+<script type="text/javascript">
+// 	var output = document.querySelector('#result');
+// output.textContent = `<h1>jhsh</h1>
+// 	 <button>hjghg</button>`;
+// former()
+	function codegen(){
+
+		var input = document.querySelector("#input").value;
+		var output = document.querySelector('#result');
+
+
+fetch("{{ url_for('codegen') }}", {
+  method: 'POST', 
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+  	data: input
+  }),
+})
+.then(response => response.json())
+.then(data => {
+
+	output.textContent = data.name;
+	former()
+
+  console.log('Success:', data.name);
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+}
+
+
+
+function former(){
+	var target = document.querySelector('#view');
+	var code = document.querySelector('#result').textContent;
+	console.log(code);
+	target.srcdoc = code;
+}
+
+</script>
+</html>
